@@ -5,9 +5,8 @@ on:
 
 env:
   applicationfolder: spring-boot-hello-world-example
-  AWS_REGION: ##region##
-  S3BUCKET: ##s3-bucket## 
-
+  AWS_REGION: us-east-1  # Set your region here
+  S3BUCKET: nambath-webappdeploymentbucket-tiivy6jyzgqz  # Set your S3 bucket here
 
 jobs:
   build:
@@ -39,7 +38,7 @@ jobs:
         working-directory: ${{ env.applicationfolder }}
         run: $GITHUB_WORKSPACE/.github/scripts/build.sh
 
-      - name: Upload Artifact to s3
+      - name: Upload Artifact to S3
         working-directory: ${{ env.applicationfolder }}/target
         run: aws s3 cp *.war s3://${{ env.S3BUCKET }}/
         
@@ -60,4 +59,4 @@ jobs:
     - run: |
         echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
         commit_hash=`git rev-parse HEAD`
-        aws deploy create-deployment --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
+        aws deploy create-deployment --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=${{ github.repository }},commitId=${commit_hash} --ignore-application-stop-failures --region ${{ env.AWS_REGION }}

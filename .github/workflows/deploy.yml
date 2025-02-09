@@ -6,7 +6,7 @@ on:
 env:
   applicationfolder: spring-boot-hello-world-example
   AWS_REGION: us-east-1  # Set your region here
-  S3BUCKET: nambath-webappdeploymentbucket-tiivy6jyzgqz  # Set your S3 bucket here
+  S3BUCKET: anaystack-webappdeploymentbucket-bp7mjxspjssd  # Set your S3 bucket here
 
 jobs:
   build:
